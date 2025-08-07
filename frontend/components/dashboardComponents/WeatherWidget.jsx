@@ -196,7 +196,7 @@ export const WeatherWidget = ({ id, location, isFavorite = false, onDelete, onTo
 
   return (
     <div
-      className={`rounded-lg shadow-sm relative overflow-hidden bg-gradient-glass backdrop-blur-glass border border-white/20 shadow-glass hover:shadow-widget transition-all duration-300 animate-fade-in hover:scale-105 my-2 ${
+      className={`rounded-lg shadow-sm relative overflow-hidden h-fit border border-white/20 shadow-glass hover:shadow-widget transition-all duration-300 animate-fade-in hover:scale-105 my-2 ${
         isExpanded ? "fixed inset-0 z-50 m-4 bg-background" : ""
       }`}
     >
