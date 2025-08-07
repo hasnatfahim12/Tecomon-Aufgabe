@@ -1,123 +1,143 @@
-## 📦 Projektstruktur (Vorschlag)
+# 🌤️ Weathery
+
+This is my submission for the Techomon assignment. A modern, full-stack weather dashboard that lets users track real-time weather for multiple locations worldwide. Built with a **Next.js/React frontend** and **Node.js/Express backend**, this app features smart caching, soft deletes, favorites, location suggestions, and a clean, animated UI.
+
+![Weather Dashboard Screenshot](./public/Screenshot.png)
+
+---
+
+## 🚀 Features
+
+- **Add locations** via search or popular cities
+- **Favourite locations** via search or popular cities
+- **Real-time weather data** from Open-Meteo API
+- **Smart caching** to reduce API calls and improve
+
+performance
+
+- **Soft delete** for widgets (data preserved)
+- **Favorites system** with `localStorage` persistence
+- **Location suggestions** using geocoding
+- **Duplicate detection** with a sleek popup
+- **Responsive design** with expandable widget views
+- **404 pages** for invalid routes (frontend and backend)
+- **Loading states, error handling, and smooth animations**
+- **Clean separation of concerns** (controllers, services, models, utils)
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **Next.js**
+- **React**
+- **JavaScript** (ES6+)
+- **Lucide Icons** for scalable vector icons
+- **CSS** with custom animations and glass-morphism design
+- **react-router-dom** (optional, for 404 page)
+
+### Backend
+
+- **Node.js** + **Express**
+- **MongoDB** + **Mongoose** (for data persistence)
+- **Axios** for external API calls
+- **Caching Layer** using `Map` with TTL (Time-To-Live)
+- **Geocoding & Weather APIs** via Open-Meteo
+
+---
+
+## 📦 Project Structure
 
 ```txt
-/project-root
-├── frontend/         → Next.js Frontend (Dashboard)
-│   ├── pages/
-│   ├── components/
-│   └── utils/
-├── backend/          → Node.js Backend (Express oder Fastify)
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   ├── services/     → Wetterdaten-Logik inkl. Caching
-│   └── cache/        → optional: In-Memory oder File-basierter Cache
+weather-dashboard/
+├── backend/
+│ ├── controllers/ # Route handlers
+│ ├── models/ # Mongoose models
+│ ├── routes/ # Express routes
+│ ├── services/ # Business logic (weather, caching)
+│ ├── .env # Environment variables
+│ └── server.js # Entry point
+│
+├── frontend/
+│ ├── components/dashboardComponents/
+│ │ ├── AddWidgetForm.jsx/ # To find location of widget
+│ │ ├── Dashboard.jsx/ # General Dashboard page
+│ │ └── WeatherWidget.jsx/ # Design and logic of widget
+│ │ ├── LocationExistsPopup.jsx
+│ ├── pages/dashboard/
+│ │ ├── index.jsx
+│ ├── utils/
+│ │ ├── api.js # Centralized API calls
+│ │ └── helper.js # Weather utilities
+│ ├── components/
+│ │ ├── LocationExistsPopup.jsx
+│ │ └── Navbar.jsx
+│ ├── pages/
+│ │ ├── index.js
+│ │ └── 404.js
+├── .env
+├── package.json
 └── README.md
 ```
 
----
-
-## 🚀 Setup-Anleitung
-
-### Voraussetzungen:
-- Node.js (v18+ empfohlen)
-- MongoDB (lokal oder über MongoDB Atlas)
-- NPM oder Yarn
-
-### 1. Backend starten
+### 1. Backend setup
 
 ```bash
-# Ins Backend wechseln
+# Switch to the backend
 cd backend
 
-# Abhängigkeiten installieren
+# Install dependencies
 npm install
 
-# Entwicklungsserver starten
+# Start development server
 npm run dev
 ```
 
-> 💡 Beispiel `.env`-Datei:
+> 💡 Example `.env` file:
+
 ```env
-MONGODB_URI=mongodb://localhost:27017/widgets
 PORT=5000
+MONGODB_URI=mongodb://localhost:27017/widgets
+NODE_ENV=development
+WEATHER_API_URL=https://api.open-meteo.com/v1
+CACHE_TTL_MINUTES=5
 ```
 
 ---
 
-### 2. Frontend starten
+### 2. Frontend setup
 
 ```bash
-# Ins Frontend wechseln
+# Switch to the frontend
 cd frontend
 
-# Abhängigkeiten installieren
+
+# Install dependencies
 npm install
 
-# Entwicklungsserver starten
+
+# Start development server
 npm run dev
 ```
 
-> 💡 Standardmäßig läuft das Frontend unter `http://localhost:3000`  
-> 💡 Das Backend sollte unter `http://localhost:5000` erreichbar sein
+> 💡 By default, the frontend runs under `http://localhost:3000`
+> 💡 The backend should be accessible under `http://localhost:5000`
+
+## 🧾 API Endpoints
+
+| Method | Endpoint                   | Description                        |
+| ------ | -------------------------- | ---------------------------------- |
+| GET    | `/api/widgets/location`    | Get location suggestion            |
+| GET    | `/api/widgets`             | List of all saved widgets          |
+| POST   | `/api/widgets`             | Create new widget (`location`)     |
+| DELETE | `/api/widgets/:id`         | Delete widget                      |
+| POST   | `/api/widgets/:id/weather` | Weather data of widget(`location`) |
 
 ---
 
-## 🔍 Funktionale Anforderungen
+## ☁️ Weather API
 
-### 🔹 Dashboard (Frontend)
-- Benutzer kann mehrere Widgets erstellen, z. B. für:
-  - Wetter in Berlin
-  - Wetter in Hamburg
-  - Wetter in Paris
-- Jedes Widget zeigt live die Wetterdaten für den gewählten Ort
-- Widgets können gelöscht werden
-- Keine Authentifizierung notwendig
+I used Open Meteo as my weather API.
 
-### 🔹 Backend (API + MongoDB)
-- API zum Erstellen, Abrufen und Löschen von Widgets
-- MongoDB speichert:
-  - Widget-Daten (`_id`, `location`, `createdAt`)
-  - (Optional: Benutzer-ID, falls später Auth hinzukommt)
-
-### 🔹 Wetterdaten-Handling
-- Wetterdaten werden bei Bedarf vom Backend über einen externen Wetterdienst abgerufen (z. B. open-meteo oder OpenWeather)
-- Wenn für eine Stadt in den letzten **5 Minuten** bereits ein Abruf erfolgte, wird der **cached** Wert zurückgegeben (Memory oder einfache Cache-Datei)
-
----
-
-## 🧾 API-Vorschlag
-
-| Methode | Endpoint                 | Beschreibung                       |
-|---------|--------------------------|------------------------------------|
-| GET     | `/widgets`               | Liste aller gespeicherten Widgets |
-| POST    | `/widgets`               | Neues Widget erstellen (`location`) |
-| DELETE  | `/widgets/:id`           | Widget löschen                     |
-
----
-
-## ☁️ Wetterdaten-API
-
-Kostenlose APIs zur Auswahl:
-
-- [https://open-meteo.com/](https://open-meteo.com/) (kein API-Key nötig)
-- [https://openweathermap.org/api](https://openweathermap.org/api) (kostenlos, mit Key)
-
----
-
-## 🧪 Ziel des Projekts
-
-- Verständnis für API-Design, Next.js-Frontend und Microservice-Architektur
-- Umgang mit externen APIs und Caching
-- MongoDB-Datenmodellierung
-- Trennung von Backend-Logik und Frontend-Komponenten
-- saubere Code-Struktur, Modularität und Dokumentation
-
----
-
-## 📄 Was soll eingereicht werden?
-
-- `README.md` mit:
-  - Setup-Anleitung
-  - API-Beschreibung
-  - Kurzer Architekturüberblick (z. B. mit Text oder Diagramm)
+- [https://open-meteo.com/](https://open-meteo.com/) (No API key required)
