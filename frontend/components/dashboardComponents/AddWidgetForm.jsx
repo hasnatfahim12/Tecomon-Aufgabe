@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import api from "../../utils/api";
 import LocationExistsPopup from "@/components/LocationExistsPopup";
 
-export const AddWidgetForm = ({ onAddWidget, widgets }) => {
+export const AddWidgetForm = ({ onAddWidget }) => {
   const [location, setLocation] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -47,24 +47,19 @@ export const AddWidgetForm = ({ onAddWidget, widgets }) => {
     e.preventDefault();
     if (!selectedSuggestion) return;
 
-    // Check if widget for this location already exists
-    const exists = widgets.some(
-      widget =>
-        widget.location.latitude === selectedSuggestion.latitude && widget.location.longitude === selectedSuggestion.longitude
-    );
-
-    if (exists) {
+    try {
+      const newWidget = await api.createWidget(selectedSuggestion); // Save to backend
+      onAddWidget(newWidget); // Pass to dashboard
+      setLocation("");
+      setSuggestions([]);
+      setShowSuggestions(false);
+      setSelectedSuggestion(null);
+    } catch (error) {
       setPopupLocation(selectedSuggestion.name);
       setShowPopup(true);
-      return;
     }
-
-    await onAddWidget(selectedSuggestion);
-    setLocation("");
-    setSuggestions([]);
-    setShowSuggestions(false);
-    setSelectedSuggestion(null);
   };
+
   const handleSuggestionClick = suggestion => {
     const locationName = suggestion.admin1
       ? `${suggestion.name}, ${suggestion.admin1}, ${suggestion.country}`

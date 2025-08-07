@@ -80,7 +80,7 @@ const Dashboard = () => {
           Find real-time weather data for any location worldwide.
         </span>
       </div>
-      <AddWidgetForm onAddWidget={addWidget} widgets={widgets} />
+      <AddWidgetForm onAddWidget={addWidget} />
       <div className="flex flex-wrap gap-y-6 gap-x-6 text-white">
         {favoriteWidgets.length > 0 && (
           <div className="space-y-6 w-full">
