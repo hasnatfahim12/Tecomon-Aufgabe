@@ -1,6 +1,6 @@
 # 🌤️ Weathery
 
-This is my submission for the Techomon assignment. A modern, full-stack weather dashboard that lets users track real-time weather for multiple locations worldwide. Built with a **Next.js/React frontend** and **Node.js/Express backend**, this app features smart caching, soft deletes, favorites, location suggestions, and a clean, animated UI.
+This is my submission for the Tecomon assignment. A modern, full-stack weather dashboard that lets users track real-time weather for multiple locations worldwide. Built with a **Next.js/React frontend** and **Node.js/Express backend**, this app features smart caching, soft deletes, favorites, location suggestions, and a clean, animated UI.
 
 ![Weather Dashboard Screenshot](./frontend/public/Screenshot.png)
 
