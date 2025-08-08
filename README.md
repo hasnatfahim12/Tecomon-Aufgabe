@@ -11,10 +11,7 @@ This is my submission for the Tecomon assignment. A modern, full-stack weather d
 - **Add locations** via search or popular cities
 - **Favourite locations** via search or popular cities
 - **Real-time weather data** from Open-Meteo API
-- **Smart caching** to reduce API calls and improve
-
-performance
-
+- **Smart caching** to reduce API calls and improve performance
 - **Soft delete** for widgets (data preserved)
 - **Favorites system** with `localStorage` persistence
 - **Location suggestions** using geocoding
